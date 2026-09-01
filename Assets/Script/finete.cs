@@ -1,0 +1,101 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class finete : MonoBehaviour
+{
+ public GameObject player;
+ public GameObject canvas;
+    public GameObject noteUI;
+    public GameObject hud;
+    public GameObject inv;
+
+    public GameObject pickUpText;
+    public GameObject activefinite;
+
+    public bool inReach;
+    public bool test;
+
+
+
+    void Start()
+    {
+        activefinite.SetActive(false);
+        hud.SetActive(true);
+        inv.SetActive(true);
+        pickUpText.SetActive(false);
+
+        inReach = false;
+        
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Reach")
+        {
+            inReach = true;
+            pickUpText.SetActive(true);
+
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Reach")
+        {
+            inReach = false;
+            pickUpText.SetActive(false);
+        }
+    }
+
+
+
+
+    void Update()
+    {
+        if(Input.GetButtonDown("Interact") && inReach)
+        {
+            canvas.SetActive(true);
+            if(test){
+                activefinite.SetActive(true);
+            }else{
+                noteUI.SetActive(true);
+            }
+            hud.SetActive(false);
+            inv.SetActive(false);
+            player.GetComponent<FirstPersonController>().enabled = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        
+    }
+
+
+    public void ExitButton()
+    {   
+        canvas.SetActive(false);
+        hud.SetActive(true);
+        inv.SetActive(true);
+        player.GetComponent<FirstPersonController>().enabled = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+    }
+    public void ExitButton_other()
+    {   
+        canvas.SetActive(false);
+        hud.SetActive(true);
+        inv.SetActive(true);
+        player.GetComponent<FirstPersonController>().enabled = true;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+    }
+    public void pressButton(){
+        test = true;
+        noteUI.SetActive(false);
+        activefinite.SetActive(true);
+    }
+    public void pressButtonOther(){
+        test = false;
+        noteUI.SetActive(true);
+        activefinite.SetActive(false);
+    }
+}
