@@ -12,7 +12,8 @@ public class Doors : MonoBehaviour
 
     public bool inReach;
 
-
+    // Animator ของประตูใช้ bool "Open" แบบ pulse: true หนึ่งเฟรมเพื่อสลับ เปิด <-> ปิด
+    private bool pulseSent;
 
 
     void Start()
@@ -39,41 +40,25 @@ public class Doors : MonoBehaviour
     }
 
 
-
-
-
     void Update()
     {
-
-        if (inReach && Input.GetButtonDown("Interact"))
+        // รีเซ็ต pulse ในเฟรมถัดไป แทนการสั่ง SetBool ทุกเฟรม
+        if (pulseSent)
         {
-            DoorOpens();
+            door.SetBool("Open", false);
+            pulseSent = false;
         }
 
-        else
+        if (inReach && GameFlow.InteractPressed())
         {
-            DoorCloses();
+            ToggleDoor();
         }
-
-
-
-
     }
-    void DoorOpens ()
+
+    void ToggleDoor()
     {
-        Debug.Log("It Opens");
         door.SetBool("Open", true);
-        door.SetBool("Closed", false);
+        pulseSent = true;
         doorSound.Play();
-
     }
-
-    void DoorCloses()
-    {
-        Debug.Log("It Closes");
-        door.SetBool("Open", false);
-        door.SetBool("Closed", true);
-    }
-
-
 }
