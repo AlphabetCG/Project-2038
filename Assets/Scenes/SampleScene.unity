@@ -18141,7 +18141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kind: 0
-  moveOffset: {x: 1.1, y: 0, z: 0.5}
+  moveOffset: {x: 1.1, y: 0, z: -0.5}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
 --- !u!114 &225883966
@@ -66716,7 +66716,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kind: 1
   moveOffset: {x: 0, y: 0, z: 0}
-  rotateEuler: {x: 0, y: 0, z: 85}
+  rotateEuler: {x: 0, y: 90, z: 0}
   scaleMultiplier: 1.5
 --- !u!4 &857826834 stripped
 Transform:
