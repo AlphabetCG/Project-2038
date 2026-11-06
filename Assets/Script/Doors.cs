@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Doors : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Doors : MonoBehaviour
 
     // Animator ของประตูใช้ bool "Open" แบบ pulse: true หนึ่งเฟรมเพื่อสลับ เปิด <-> ปิด
     private bool pulseSent;
+    private bool isOpen;
 
 
     void Start()
@@ -27,6 +29,7 @@ public class Doors : MonoBehaviour
         {
             inReach = true;
             openText.SetActive(true);
+            UpdatePrompt();
         }
     }
 
@@ -60,5 +63,13 @@ public class Doors : MonoBehaviour
         door.SetBool("Open", true);
         pulseSent = true;
         doorSound.Play();
+        isOpen = !isOpen;
+        UpdatePrompt();
+    }
+
+    void UpdatePrompt()
+    {
+        TMP_Text label = openText.GetComponentInChildren<TMP_Text>(true);
+        if (label != null) label.text = isOpen ? "[E] Close Door" : "[E] Open Door";
     }
 }
