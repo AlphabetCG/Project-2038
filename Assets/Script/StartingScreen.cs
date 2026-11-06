@@ -14,6 +14,7 @@ public class StartingScreen : MonoBehaviour
     {
         startingScreen.SetActive(true);
         player = GameObject.FindWithTag("Player");
+        OptionsMenu.ApplyToPlayer(player);
         player.GetComponent<FirstPersonController>().enabled = false;
 
         StartCoroutine(Starting());
