@@ -25,6 +25,7 @@ public class FiniteLogic : MonoBehaviour
         {
             item.SetActive(true);
             condition1Done = true; // Mark condition as completed
+            ChecklistProgress.Complete(ChecklistTask.SolveSensors);
         }
 
         // Check second condition and ensure it runs only once

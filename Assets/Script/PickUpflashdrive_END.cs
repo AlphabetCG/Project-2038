@@ -52,21 +52,26 @@ public GameObject keyOB;
     {
         if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
-            pickedUp = true;
-            inReach = false;
-            // ของในห้องบอสถูกจัดการโดย BossManager แล้ว ช่อง item1-5 ปล่อยว่างได้
-            foreach (var item in new[] { item1, item2, item3, item4, item5 })
-            {
-                if (item != null) item.SetActive(true);
-            }
-            keyOB.SetActive(false);
-            keySound.Play();
-            invOB.SetActive(true);
-            pickUpText.SetActive(false);
-            oldtext.SetActive(false);
-            newtext.SetActive(true);
+            Collect();
         }
+    }
 
-        
+    public void Collect()
+    {
+        if (pickedUp || !inReach || !GameFlow.IsInGameplay()) return;
+        pickedUp = true;
+        ChecklistProgress.Complete(ChecklistTask.CollectFinalDrive);
+        inReach = false;
+        // ของในห้องบอสถูกจัดการโดย BossManager แล้ว ช่อง item1-5 ปล่อยว่างได้
+        foreach (var item in new[] { item1, item2, item3, item4, item5 })
+        {
+            if (item != null) item.SetActive(true);
+        }
+        keyOB.SetActive(false);
+        keySound.Play();
+        invOB.SetActive(true);
+        pickUpText.SetActive(false);
+        oldtext.SetActive(false);
+        newtext.SetActive(true);
     }
 }

@@ -58,20 +58,26 @@ public class ReadNotes : MonoBehaviour
     {
         if(GameFlow.InteractPressed() && inReach)
         {
-            noteUI.SetActive(true);
-            pickUpSound.Play();
-            line.SetActive(true);
-            PlayerUI.Open(player, hud, inv);
+            Read();
         }
-        
+    }
+
+    public void Read()
+    {
+        if (!inReach || !GameFlow.IsInGameplay()) return;
+        if (readnote != null) ChecklistProgress.Complete(ChecklistTask.ReadNote);
+        noteUI.SetActive(true);
+        pickUpSound.Play();
+        line.SetActive(true);
+        PlayerUI.Open(player, hud, inv);
     }
 
 
     public void ExitButton()
     {   
-        readnote.SetActive(false);
-        line.SetActive(false);
-        Login.SetActive(true);
+        if (readnote != null) readnote.SetActive(false);
+        if (line != null) line.SetActive(false);
+        if (Login != null) Login.SetActive(true);
         noteUI.SetActive(false);
         PlayerUI.Close(player, hud, inv);
     }

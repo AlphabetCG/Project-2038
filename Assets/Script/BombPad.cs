@@ -13,6 +13,7 @@ public class BombPad : Keypad
 
     protected override void OnCorrect()
     {
+        ChecklistProgress.Complete(ChecklistTask.DefuseBomb);
         budisiam.SetActive(true);
         doortoilet.SetActive(true);
         keypadOB.SetActive(false);

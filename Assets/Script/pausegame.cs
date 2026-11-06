@@ -9,6 +9,7 @@ public class pausegame : MonoBehaviour
     public GameObject quit;
 
     private bool isPaused;
+    public bool IsPaused => isPaused;
 
 
     void Start()
@@ -20,6 +21,7 @@ public class pausegame : MonoBehaviour
 
     void Update()
     {
+        if (ChecklistUI.BlocksPauseInput) return;
         if (!Input.GetButtonDown("pause")) return;
 
         if (isPaused)
@@ -43,6 +45,7 @@ public class pausegame : MonoBehaviour
 
     public void Resume()
     {
+        if (ChecklistUI.IsOpen || GameFlow.GameEnded) return;
         Time.timeScale = 1;
         menu.SetActive(false);
         isPaused = false;

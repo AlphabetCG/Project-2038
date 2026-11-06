@@ -50,16 +50,21 @@ public class PickUpKey : MonoBehaviour
     {
         if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
-            pickedUp = true;
-            inReach = false;
-            old_text.SetActive(false);
-            text_new.SetActive(true);
-            keyOB.SetActive(false);
-            keySound.Play();
-            invOB.SetActive(true);
-            pickUpText.SetActive(false);
+            Collect();
         }
+    }
 
-        
+    public void Collect()
+    {
+        if (pickedUp || !inReach || !GameFlow.IsInGameplay()) return;
+        pickedUp = true;
+        ChecklistProgress.Complete(ChecklistTask.CollectFlashdrive);
+        inReach = false;
+        old_text.SetActive(false);
+        text_new.SetActive(true);
+        keyOB.SetActive(false);
+        keySound.Play();
+        invOB.SetActive(true);
+        pickUpText.SetActive(false);
     }
 }

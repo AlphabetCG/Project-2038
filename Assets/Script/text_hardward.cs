@@ -11,6 +11,7 @@ public class text_hardward : MonoBehaviour
         // ตรวจสอบว่าเป็นผู้เล่นหรือไม่
         if (other.CompareTag("Player"))
         {
+            ChecklistProgress.Complete(ChecklistTask.ReachHardware);
             object1.SetActive(false);
             object2.SetActive(true);
             object3.SetActive(true);

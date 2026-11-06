@@ -34,6 +34,7 @@ public class ReadInput : MonoBehaviour
 
         if (s == PuzzleCodes.Get(passwordKey))
         {
+            ChecklistProgress.Complete(ChecklistTask.LoginTaVChai);
             line.SetActive(true);
             login_UI.SetActive(false);
             main_UI.SetActive(true);
