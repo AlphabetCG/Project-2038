@@ -15,6 +15,9 @@ public class mainmenulogicc : MonoBehaviour
     }
 
     public void changescreen(){
+        GameModeMenu.Open(StartSelectedGame);
+    }
+    void StartSelectedGame(){
         loading.SetActive(true);
         StartCoroutine(GameFlow.LoadSceneAsync(GameFlow.GameScene));
     }

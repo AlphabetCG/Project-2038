@@ -217,6 +217,7 @@ public class BossManager : MonoBehaviour
 
     void Win()
     {
+        ChecklistProgress.Complete(ChecklistTask.DefeatBoss);
         Finish();
         if (!GameFlow.EndGame()) return;
         if (winVideo1 != null) winVideo1.SetActive(true);

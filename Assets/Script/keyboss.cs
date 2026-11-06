@@ -46,14 +46,21 @@ public class keyboss : MonoBehaviour
     {
         if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
-            pickedUp = true;
-            inReach = false;
-            keyOB.SetActive(false);
-            keySound.Play();
-            oldtext.SetActive(false);
-            newtext.SetActive(true);
-            invOB.SetActive(true);
-            pickUpText.SetActive(false);
+            Collect();
         }
+    }
+
+    public void Collect()
+    {
+        if (pickedUp || !inReach || !GameFlow.IsInGameplay()) return;
+        pickedUp = true;
+        ChecklistProgress.Complete(ChecklistTask.CollectBossKey);
+        inReach = false;
+        keyOB.SetActive(false);
+        keySound.Play();
+        oldtext.SetActive(false);
+        newtext.SetActive(true);
+        invOB.SetActive(true);
+        pickUpText.SetActive(false);
     }
 }

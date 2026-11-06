@@ -14,6 +14,7 @@ public GameObject door_lock;
         // ตรวจสอบว่าเป็นผู้เล่นหรือไม่
         if (other.CompareTag("Player"))
         {
+            ChecklistProgress.Complete(ChecklistTask.FollowFootprints);
             // เล่นเสียง
             if (audioSource != null)
             {   

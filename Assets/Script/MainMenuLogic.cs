@@ -30,6 +30,11 @@ public class MainMenuLogic : MonoBehaviour
 
     public void StartButton()
     {
+        GameModeMenu.Open(StartSelectedGame);
+    }
+
+    void StartSelectedGame()
+    {
         loading.GetComponent<Canvas>().enabled = true;
         mainMenu.GetComponent<Canvas>().enabled = false;
         buttonSound.Play();

@@ -65,32 +65,37 @@ public class PickUpFinalKey : MonoBehaviour
     {
         if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
-            pickedUp = true;
-            inReach = false;
-            Opendoor.SetActive(true);
-            sceen.SetActive(true);
-            video.SetActive(true);
-            keyOB.SetActive(false);
-            keySound.Play();
-            invOB.SetActive(true);
-            pickUpText.SetActive(false);
-            footprint1.SetActive(true);
-            footprint2.SetActive(true);
-            footprint3.SetActive(true);
-            footprint4.SetActive(true);
-            footprint5.SetActive(true);
-            footprint6.SetActive(true);
-            footprint7.SetActive(true);
-            footprint8.SetActive(true);
-            footprint9.SetActive(true);
-            footprint10.SetActive(true);
-            footprint11.SetActive(true);
-            footprint12.SetActive(true);
-            footprint13.SetActive(true);
-            oldtext.SetActive(false);
-            newtext.SetActive(true);
+            Collect();
         }
+    }
 
-        
+    public void Collect()
+    {
+        if (pickedUp || !inReach || !GameFlow.IsInGameplay()) return;
+        pickedUp = true;
+        ChecklistProgress.Complete(ChecklistTask.CollectKey);
+        inReach = false;
+        Opendoor.SetActive(true);
+        sceen.SetActive(true);
+        video.SetActive(true);
+        keyOB.SetActive(false);
+        keySound.Play();
+        invOB.SetActive(true);
+        pickUpText.SetActive(false);
+        footprint1.SetActive(true);
+        footprint2.SetActive(true);
+        footprint3.SetActive(true);
+        footprint4.SetActive(true);
+        footprint5.SetActive(true);
+        footprint6.SetActive(true);
+        footprint7.SetActive(true);
+        footprint8.SetActive(true);
+        footprint9.SetActive(true);
+        footprint10.SetActive(true);
+        footprint11.SetActive(true);
+        footprint12.SetActive(true);
+        footprint13.SetActive(true);
+        oldtext.SetActive(false);
+        newtext.SetActive(true);
     }
 }

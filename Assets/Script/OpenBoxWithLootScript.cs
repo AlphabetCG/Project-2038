@@ -39,7 +39,18 @@ public class OpenBoxWithLootScript : MonoBehaviour
     }
     void Update()
     {
-        if(keyOBNeeded.activeInHierarchy == true && inReach && GameFlow.InteractPressed())
+        if (inReach && GameFlow.InteractPressed()) TryOpen();
+        if(isOpen)
+        {
+            boxOB.GetComponent<BoxCollider>().enabled = false;
+            boxOB.GetComponent<OpenBoxWithLootScript>().enabled = false;
+        }
+    }
+
+    public void TryOpen()
+    {
+        if (isOpen || !inReach || !GameFlow.IsInGameplay()) return;
+        if(keyOBNeeded.activeInHierarchy)
         {
             keyOBNeeded.SetActive(false);
             openSound.Play();
@@ -47,20 +58,16 @@ public class OpenBoxWithLootScript : MonoBehaviour
             openText.SetActive(false);
             KeyMissingText.SetActive(false);
             isOpen = true;
+            ChecklistProgress.Complete(ChecklistTask.PrintKey);
             drop1.SetActive(true);
             oldtext.SetActive(false);
             new_line.SetActive(true);
 
         }
-        else if (keyOBNeeded.activeInHierarchy == false && inReach && GameFlow.InteractPressed())
+        else
         {
             openText.SetActive(false);
             KeyMissingText.SetActive(true);
-        }
-        if(isOpen)
-        {
-            boxOB.GetComponent<BoxCollider>().enabled = false;
-            boxOB.GetComponent<OpenBoxWithLootScript>().enabled = false;
         }
     }
 }

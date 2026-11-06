@@ -26,6 +26,7 @@ public class Readinput_Jomo : MonoBehaviour
     void Update()
     {
         if(!string.IsNullOrEmpty(password) && input == password){
+            ChecklistProgress.Complete(ChecklistTask.LoginJoMo);
             line.SetActive(true);
             input = "";
             login_UI.SetActive(false);

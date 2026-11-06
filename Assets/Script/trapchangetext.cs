@@ -10,6 +10,7 @@ public GameObject newtext;
         // ตรวจสอบว่าเป็นผู้เล่นหรือไม่
         if (other.CompareTag("Player"))
         {
+                ChecklistProgress.Complete(ChecklistTask.ReachBossRoom);
                 oldtext.SetActive(false);
                 newtext.SetActive(true);
                 cude.SetActive(false);
