@@ -18,6 +18,8 @@ public class OptionsMenu : MonoBehaviour
 
     public Slider volumeSlider;      // ค่า 0 - 1
     public Slider sensitivitySlider; // แนะนำค่า 0.5 - 5
+    public Slider brightnessSlider;
+    public TMP_Text brightnessValueText;
     public Toggle fullscreenToggle;
     public TMP_Dropdown qualityDropdown;
 
@@ -42,6 +44,26 @@ public class OptionsMenu : MonoBehaviour
             qualityDropdown.AddOptions(new List<string>(QualitySettings.names));
             qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
         }
+    }
+
+    void OnEnable()
+    {
+        if (brightnessSlider != null) brightnessSlider.SetValueWithoutNotify(DisplayBrightness.Value);
+        UpdateBrightnessText();
+    }
+
+    void OnDisable() => PlayerPrefs.Save();
+
+    public void SetBrightness(float value)
+    {
+        DisplayBrightness.Set(value);
+        UpdateBrightnessText();
+    }
+
+    void UpdateBrightnessText()
+    {
+        if (brightnessValueText != null)
+            brightnessValueText.text = Mathf.RoundToInt(DisplayBrightness.Value * 100) + "%";
     }
 
     public void SetVolume(float value)
