@@ -138,6 +138,15 @@ public class PuzzleCodes : MonoBehaviour
         }
     }
 
+    // ตัวสุ่มแยกตามชื่อ (ใช้ fixedSeed เดียวกันถ้าตั้งไว้) สำหรับระบบอื่นที่ต้องสุ่ม เช่น BossManager
+    public static System.Random CreateRandom(string salt)
+    {
+        int hash = 17;
+        foreach (char c in salt) hash = hash * 31 + c;
+        int seed = Instance != null && Instance.fixedSeed != 0 ? Instance.fixedSeed : System.Environment.TickCount;
+        return new System.Random(seed ^ hash);
+    }
+
     public static string Get(string key)
     {
         if (Instance != null && Instance.codes.TryGetValue(key, out string value)) return value;
