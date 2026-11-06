@@ -23,6 +23,7 @@ public class PuzzleCodes : MonoBehaviour
         GenerateTaVChai(rng);
         GenerateDigits(rng, "keypad1", 4); // Keypad ห้อง 1: เลขบนรูปห้องชั้นบน
         GeneratePrefixPuzzle(rng, "keypad2"); // Keypad ห้อง 2: รหัสที่หายไป 1 หลัก = ผลของ prefix expression
+        GenerateCombination(rng, "bomb");     // ระเบิด: รหัส = C(n,k)
 
 #if UNITY_EDITOR
         foreach (var kv in codes) Debug.Log("[PuzzleCodes] " + kv.Key + " = " + kv.Value);
@@ -92,6 +93,30 @@ public class PuzzleCodes : MonoBehaviour
         codes[key] = new string(digits);
         codes[key + "_expr"] = "+ - * " + a + " " + b + " " + c + " / pow " + d + " " + e + " " + f;
         codes[key + "_hint"] = string.Join(" ", hint);
+    }
+
+    // รหัส = C(n,k) ที่เป็นเลข 4 หลัก (n ไม่เกิน 20, 2 <= k <= n/2 เพื่อไม่ให้ง่ายเกินและไม่ซ้ำกับ C(n,n-k))
+    //   key = รหัส เช่น "3432", key_n = "14", key_k = "7"
+    void GenerateCombination(System.Random rng, string key)
+    {
+        var options = new List<Vector2Int>();
+        for (int n = 4; n <= 20; n++)
+            for (int k = 2; k <= n / 2; k++)
+            {
+                long c = Combination(n, k);
+                if (c >= 1000 && c <= 9999) options.Add(new Vector2Int(n, k));
+            }
+        var pick = options[rng.Next(options.Count)];
+        codes[key] = Combination(pick.x, pick.y).ToString();
+        codes[key + "_n"] = pick.x.ToString();
+        codes[key + "_k"] = pick.y.ToString();
+    }
+
+    static long Combination(int n, int k)
+    {
+        long result = 1;
+        for (int i = 1; i <= k; i++) result = result * (n - k + i) / i;
+        return result;
     }
 
     static int CountHexLetters(string hex)
