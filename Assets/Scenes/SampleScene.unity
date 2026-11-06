@@ -1422,6 +1422,9 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 2.5
+  rotateTogether: []
+  incompatibleWith:
+  - {fileID: 42025129}
 --- !u!114 &17402537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3941,6 +3944,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 3
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &42025130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14447,9 +14452,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kind: 2
-  moveOffset: {x: 0, y: 0, z: 0}
+  moveOffset: {x: 0.85, y: -0.42049956, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
-  scaleMultiplier: 2
+  scaleMultiplier: 1.6
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &174589249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15173,6 +15180,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.8
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!1 &184352629
 GameObject:
   m_ObjectHideFlags: 0
@@ -18144,6 +18153,8 @@ MonoBehaviour:
   moveOffset: {x: 1.1, y: 0, z: -0.5}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &225883966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22324,6 +22335,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 90}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &298782683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33856,6 +33869,8 @@ MonoBehaviour:
   moveOffset: {x: 1.4, y: 0, z: -0.9}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!1 &454107149
 GameObject:
   m_ObjectHideFlags: 0
@@ -56334,9 +56349,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kind: 1
-  moveOffset: {x: 0, y: 0, z: 0}
-  rotateEuler: {x: 0, y: 180, z: 0}
+  moveOffset: {x: 0.45, y: 0, z: 0}
+  rotateEuler: {x: 0, y: 90, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!1 &716520399
 GameObject:
   m_ObjectHideFlags: 0
@@ -57869,7 +57886,7 @@ Transform:
   m_GameObject: {fileID: 732346037}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 54.109, y: 0.901, z: 20.766}
+  m_LocalPosition: {x: 53.709, y: 0.901, z: 20.496}
   m_LocalScale: {x: 0.57573, y: 0.57573, z: 0.57573}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57954,9 +57971,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kind: 0
-  moveOffset: {x: 0, y: 0, z: -0.6}
+  moveOffset: {x: 0, y: 0, z: 0.25}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!1 &732722020
 GameObject:
   m_ObjectHideFlags: 0
@@ -66719,6 +66738,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 90, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!4 &857826834 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3277708446479996907, guid: 05dfc96d695321943913472b509ece48, type: 3}
@@ -76559,6 +76580,7 @@ MonoBehaviour:
   - {fileID: 8902543187887543664}
   anomalyCount: 5
   maxStrikes: 3
+  inspectAngle: 25
   bossCanvas: {fileID: 1856435105}
   hearts:
   - {fileID: 1377171632}
@@ -76580,10 +76602,10 @@ MonoBehaviour:
 
     Too many mistakes'
   sketchViewpoint: {fileID: 1579129343}
-  sketchFov: 80
+  sketchFov: 75
   sketchFrame: {fileID: 652194068}
-  sketchWidth: 1024
-  sketchHeight: 640
+  sketchWidth: 1600
+  sketchHeight: 1000
   sketchGlow: 0.35
 --- !u!1 &982002686
 GameObject:
@@ -98574,6 +98596,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3701831a233999b478c7192721db0ecc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1476699839}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3701831a233999b478c7192721db0ecc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1476699843}
   m_SourcePrefab: {fileID: 100100000, guid: 3701831a233999b478c7192721db0ecc, type: 3}
 --- !u!1001 &1241287988
 PrefabInstance:
@@ -104670,7 +104695,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1308956210}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd53f20d69f4c51458fd7ccbb3ea1c0e, type: 3}
   m_Name: 
@@ -117751,7 +117776,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.02079504, y: 1.5114604, z: 0.020677686}
   m_Center: {x: -0.000055600423, y: -0.37190363, z: -0.00033884306}
@@ -117784,6 +117809,10 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 180, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether:
+  - {fileID: 174589250}
+  - {fileID: 543450653470734965}
+  incompatibleWith: []
 --- !u!1 &1478161389
 GameObject:
   m_ObjectHideFlags: 0
@@ -123385,6 +123414,8 @@ MonoBehaviour:
   moveOffset: {x: -1.6, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!1 &1559815286
 GameObject:
   m_ObjectHideFlags: 0
@@ -125386,8 +125417,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579129342}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16129687, y: -0.24427012, z: 0.041243218, w: 0.95530856}
-  m_LocalPosition: {x: 27.5, y: 2.6, z: 21.7}
+  m_LocalRotation: {x: 0.17585006, y: -0.09164472, z: 0.016444556, w: 0.9800039}
+  m_LocalPosition: {x: 25.8, y: 3, z: 21.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -177842,6 +177873,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &919132149035386047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181347,6 +181380,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &3469287837455398356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186000,6 +186035,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &6559831786703196999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188513,8 +188550,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7275226687097935329}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.11296826, y: 0.74491996, z: -0.28199312, w: 0.59398013}
-  m_LocalPosition: {x: 27.242, y: 0.53, z: 25.248}
+  m_LocalRotation: {x: 0, y: 0.7318297, z: -0.68148756, w: 0}
+  m_LocalPosition: {x: 27.242, y: 1.0600238, z: 25.248}
   m_LocalScale: {x: 0.0032543046, y: 0.0032543046, z: 0.0032543046}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -190136,6 +190173,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &8902543187887543664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190653,6 +190692,8 @@ MonoBehaviour:
   moveOffset: {x: 0, y: 0, z: 0}
   rotateEuler: {x: 0, y: 0, z: 0}
   scaleMultiplier: 1.5
+  rotateTogether: []
+  incompatibleWith: []
 --- !u!114 &9220610409361683512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192340,6 +192381,33 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1780604741}
   m_Mesh: {fileID: -1492196828186865917, guid: 44b8b3652855f7e4688295c7e689e3c8, type: 3}
+--- !u!4 &174589250 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bd6e2f57190b5c942a6b1bded100f2fb, type: 3}
+  m_PrefabInstance: {fileID: 1455539752}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1476699843
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476699830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2477511411847689622, guid: 3701831a233999b478c7192721db0ecc, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
