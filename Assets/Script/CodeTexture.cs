@@ -12,6 +12,7 @@ public class CodeTexture : MonoBehaviour
     public Color color = Color.black;
     public float characterSpacing = 0;
     public FontStyles fontStyle = FontStyles.Normal;
+    [Range(0, 1)] public float glow = 0;
 
     [Header("ตำแหน่งบนรูป (0-1, มุมซ้ายล่าง = 0,0)")]
     public Vector2 center = new Vector2(0.5f, 0.5f);
@@ -35,7 +36,15 @@ public class CodeTexture : MonoBehaviour
     {
         var extras = new string[extraTexts.Length];
         for (int i = 0; i < extras.Length; i++) extras[i] = PuzzleCodes.Format(extraTexts[i].template);
-        GetComponent<Renderer>().material.mainTexture = Render(PuzzleCodes.Format(template), extras);
+        var material = GetComponent<Renderer>().material;
+        var texture = Render(PuzzleCodes.Format(template), extras);
+        material.mainTexture = texture;
+        if (glow > 0)
+        {
+            material.SetTexture("_EmissionMap", texture);
+            material.SetColor("_EmissionColor", Color.white * glow);
+            material.EnableKeyword("_EMISSION");
+        }
     }
 
     // layer ที่ใช้ตอนวาด (ต้องไม่มีวัตถุอื่นในฉากใช้)

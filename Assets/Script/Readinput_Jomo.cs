@@ -15,16 +15,17 @@ public class Readinput_Jomo : MonoBehaviour
     public GameObject Login_text;
     public GameObject flashdrive_txt;
     public GameObject line;
+    private string password;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        password = PuzzleCodes.Get("jomo_pass");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(input == "3761245"){
+        if(!string.IsNullOrEmpty(password) && input == password){
             line.SetActive(true);
             input = "";
             login_UI.SetActive(false);
