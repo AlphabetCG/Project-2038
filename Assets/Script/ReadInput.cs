@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
+using TMPro;
 
+// หน้า login ของคอม TaVChai: รหัสมาจาก PuzzleCodes (สุ่มทุกเกม)
 public class ReadInput : MonoBehaviour
 {
-    private string input;
     public GameObject player;
     public GameObject hud;
     public GameObject inv;
@@ -13,26 +15,49 @@ public class ReadInput : MonoBehaviour
     public GameObject Login;
 
     public GameObject NotePad_UI;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public string passwordKey = "tavchai_pass"; // ชื่อรหัสใน PuzzleCodes
+    public TMP_InputField passwordField;
+    public GameObject wrongText;                // ข้อความ "Wrong password" ไม่บังคับ
+    public float wrongDisplayTime = 1f;
+
+    void OnEnable()
     {
-        
+        if (wrongText != null) wrongText.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    // ผูกกับ onEndEdit ของช่องรหัส (กด Enter)
+    public void ReadStringInput(string s)
     {
-        if(input == "701310"){
+        s = s.Trim();
+        if (s.Length == 0) return;
+
+        if (s == PuzzleCodes.Get(passwordKey))
+        {
             line.SetActive(true);
-            input = "";
             login_UI.SetActive(false);
             main_UI.SetActive(true);
         }
+        else
+        {
+            StopAllCoroutines();
+            StartCoroutine(ShowWrong());
+        }
     }
-    public void ReadStringInput(string s)
+
+    IEnumerator ShowWrong()
     {
-        input = s;
+        if (passwordField != null)
+        {
+            passwordField.text = "";
+            passwordField.ActivateInputField();
+        }
+        if (wrongText == null) yield break;
+        wrongText.SetActive(true);
+        yield return new WaitForSecondsRealtime(wrongDisplayTime);
+        wrongText.SetActive(false);
     }
+
     public void DoNotOpen(){
         NotePad_UI.SetActive(true);
     }
@@ -41,12 +66,11 @@ public class ReadInput : MonoBehaviour
     }
     public void ExitButton_login()
     {
-
         login_UI.SetActive(false);
         PlayerUI.Close(player, hud, inv);
     }
     public void ExitButton_main()
-    {   
+    {
         Login.SetActive(false);
         line.SetActive(false);
         check_list.SetActive(true);
