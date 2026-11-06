@@ -53,6 +53,7 @@ public class BossManager : MonoBehaviour
     private readonly HashSet<Inspectable> checkedItems = new HashSet<Inspectable>();
     private readonly List<Anomaly> active = new List<Anomaly>();
     private bool finished;
+    private bool beginPending;
     private Texture2D sketch;
 
     void Awake()
@@ -93,7 +94,8 @@ public class BossManager : MonoBehaviour
             if (IsActive) Finish();
             return;
         }
-        if (!IsActive && !finished && startTrigger != null && startTrigger.activeInHierarchy) Begin();
+        if (!IsActive && !finished && !beginPending && startTrigger != null && startTrigger.activeInHierarchy)
+            StartCoroutine(BeginAfterCutscene());
         if (!IsActive) return;
 
         Inspectable target = CurrentTarget();
@@ -103,7 +105,7 @@ public class BossManager : MonoBehaviour
 
     public void Begin()
     {
-        if (IsActive || finished || GameFlow.GameEnded) return;
+        if (IsActive || finished || GameFlow.GameEnded || StartingScreen.IsPlaying) return;
         IsActive = true;
 
         // สุ่มเลือกจุดผิด
@@ -130,6 +132,16 @@ public class BossManager : MonoBehaviour
 #if UNITY_EDITOR
         foreach (var a in active) Debug.Log("[BossManager] anomaly: " + a.name + " (" + a.kind + ")");
 #endif
+    }
+
+    IEnumerator BeginAfterCutscene()
+    {
+        beginPending = true;
+        // Inventory activation starts its cutscene in Start on the following frame.
+        yield return null;
+        while (StartingScreen.IsPlaying && !GameFlow.GameEnded) yield return null;
+        beginPending = false;
+        if (startTrigger != null && startTrigger.activeInHierarchy) Begin();
     }
 
     public void EnterReach(Inspectable i)
@@ -220,8 +232,7 @@ public class BossManager : MonoBehaviour
         ChecklistProgress.Complete(ChecklistTask.DefeatBoss);
         Finish();
         if (!GameFlow.EndGame()) return;
-        if (winVideo1 != null) winVideo1.SetActive(true);
-        if (winVideo2 != null) winVideo2.SetActive(true);
+        StartingScreen.Play(winVideo2, winVideo1);
     }
 
     void Lose()

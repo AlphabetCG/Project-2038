@@ -7,8 +7,7 @@ public class videokeepfd : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        video1.SetActive(true);
-        video2.SetActive(true);
+        StartingScreen.Play(video1, video2);
     }
 
     // Update is called once per frame
