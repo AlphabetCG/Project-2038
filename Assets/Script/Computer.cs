@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Computer_Jomo สืบทอดจากคลาสนี้
 public class Computer : MonoBehaviour
 {
     public GameObject player;
@@ -17,7 +18,7 @@ public class Computer : MonoBehaviour
 
 
 
-    void Start()
+    protected virtual void Start()
     {
         noteUI.SetActive(false);
         hud.SetActive(true);
@@ -25,10 +26,10 @@ public class Computer : MonoBehaviour
         pickUpText.SetActive(false);
 
         inReach = false;
-        
+
     }
 
-    void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Reach")
         {
@@ -38,7 +39,7 @@ public class Computer : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Reach")
         {
@@ -50,29 +51,21 @@ public class Computer : MonoBehaviour
 
 
 
-    void Update()
+    protected virtual void Update()
     {
-        if(Input.GetButtonDown("Interact") && inReach)
+        if(GameFlow.InteractPressed() && inReach)
         {
             noteUI.SetActive(true);
             pickUpSound.Play();
-            hud.SetActive(false);
-            inv.SetActive(false);
-            player.GetComponent<FirstPersonController>().enabled = false;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            PlayerUI.Open(player, hud, inv);
         }
-        
+
     }
 
 
     public void ExitButton()
     {
-
         noteUI.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
+        PlayerUI.Close(player, hud, inv);
     }
 }

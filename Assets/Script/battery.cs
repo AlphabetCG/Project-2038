@@ -42,7 +42,7 @@ public class battery : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && inReach)
+        if(GameFlow.InteractPressed() && inReach)
         {
             flashlight.GetComponent<FlashlightAdvanced>().batteries += 1;
             pickUpSound.Play();
