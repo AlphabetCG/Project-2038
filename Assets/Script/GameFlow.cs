@@ -29,6 +29,7 @@ public class GameFlow : MonoBehaviour
 
     public static void LoadScene(string sceneName)
     {
+        StartingScreen.CancelAll();
         Time.timeScale = 1;
         GameEnded = false;
         UnlockCursor();
@@ -38,6 +39,7 @@ public class GameFlow : MonoBehaviour
     // โหลดฉากแบบ async ให้ loading screen แสดงผลได้จริง
     public static IEnumerator LoadSceneAsync(string sceneName)
     {
+        StartingScreen.CancelAll();
         Time.timeScale = 1;
         GameEnded = false;
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
@@ -52,6 +54,7 @@ public class GameFlow : MonoBehaviour
     {
         if (GameEnded) return false;
         GameEnded = true;
+        StartingScreen.CancelAll();
         var player = Object.FindFirstObjectByType<FirstPersonController>();
         if (player != null)
         {
@@ -75,9 +78,30 @@ public class GameFlow : MonoBehaviour
         runner.StartCoroutine(runner.ShowRoutine(delay, targets));
     }
 
+    // End screens follow the actual video's completion, skip, or playback error.
+    public static void PlayEnding(GameObject screen, GameObject videoObject, float fallbackDelay, params GameObject[] targets)
+    {
+        if (videoObject != null && videoObject.GetComponent<UnityEngine.Video.VideoPlayer>() != null)
+        {
+            var cutscene = videoObject.GetComponent<StartingScreen>();
+            if (cutscene == null) cutscene = videoObject.AddComponent<StartingScreen>();
+            cutscene.onFinished.AddListener(() =>
+            {
+                foreach (var target in targets) if (target != null) target.SetActive(true);
+            });
+            StartingScreen.Play(videoObject, screen);
+        }
+        else
+        {
+            if (screen != null) screen.SetActive(true);
+            if (videoObject != null) videoObject.SetActive(true);
+            ShowAfterDelay(fallbackDelay, targets);
+        }
+    }
+
     IEnumerator ShowRoutine(float delay, GameObject[] targets)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         foreach (var t in targets)
         {
             if (t != null) t.SetActive(true);
@@ -109,7 +133,7 @@ public class GameFlow : MonoBehaviour
     // เกมอยู่ในโหมดเล่นปกติ (ไม่ pause, ไม่ได้เปิด UI ที่ปลดล็อกเมาส์ไว้, เกมยังไม่จบ)
     public static bool IsInGameplay()
     {
-        return Time.timeScale > 0 && !GameEnded && !StartingScreen.IsPlaying && Cursor.lockState == CursorLockMode.Locked;
+        return Time.timeScale > 0 && !GameEnded && !StartingScreen.BlocksGameplayInput && Cursor.lockState == CursorLockMode.Locked;
     }
 
     // กดปุ่ม Interact ได้เฉพาะตอนเล่นปกติ (กันการเปิด UI ซ้อนตอน pause หรือตอนเปิด UI อื่นอยู่)

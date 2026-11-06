@@ -59,10 +59,7 @@ public class TimerController : MonoBehaviour
     {
         if (!GameFlow.EndGame()) return;
 
-        video.SetActive(true);
-        video1.SetActive(true);
+        GameFlow.PlayEnding(video1, video, screenDelay, button, gameOverScreen);
         test.SetActive(false);
-        // test คือ GameObject ที่มีสคริปต์นี้อยู่ จึงให้ GameFlow เป็นคนหน่วงเวลาแทน
-        GameFlow.ShowAfterDelay(screenDelay, button, gameOverScreen);
     }
 }

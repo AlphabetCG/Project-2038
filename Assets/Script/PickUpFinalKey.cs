@@ -76,8 +76,7 @@ public class PickUpFinalKey : MonoBehaviour
         ChecklistProgress.Complete(ChecklistTask.CollectKey);
         inReach = false;
         Opendoor.SetActive(true);
-        sceen.SetActive(true);
-        video.SetActive(true);
+        StartingScreen.Play(video, sceen);
         keyOB.SetActive(false);
         keySound.Play();
         invOB.SetActive(true);

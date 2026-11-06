@@ -37,10 +37,8 @@ public class FiniteLogic : MonoBehaviour
             condition2Done = true; // Mark condition as completed
             if (GameFlow.EndGame())
             {
-                video.SetActive(true);
-                video1.SetActive(true);
+                GameFlow.PlayEnding(video1, video, screenDelay, button, gameOverScreen);
                 item.SetActive(true);
-                GameFlow.ShowAfterDelay(screenDelay, button, gameOverScreen);
             }
         }
     }
