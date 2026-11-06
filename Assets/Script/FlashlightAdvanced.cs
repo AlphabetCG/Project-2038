@@ -18,77 +18,79 @@ public class FlashlightAdvanced : MonoBehaviour
     public AudioSource flashOFF;
 
     private bool on;
-    private bool off;
+
+    // ใช้เช็คว่าค่าเปลี่ยนก่อนอัปเดตข้อความ
+    private int shownLifetime = -1;
+    private float shownBatteries = -1;
 
 
     void Start()
     {
         light = GetComponent<Light>();
 
-        off = true;
+        on = false;
         light.enabled = false;
 
     }
 
 
-
     void Update()
     {
-        text.text = lifetime.ToString("0") + "%";
-        batteryText.text = batteries.ToString();
-
-        if(Input.GetButtonDown("flashlight") && off)
+        // ไม่รับ input ตอน pause / เปิด UI / เกมจบ
+        if (GameFlow.IsInGameplay())
         {
-            flashON.Play();
-            light.enabled = true;
-            on = true;
-            off = false;
-        }
+            if (Input.GetButtonDown("flashlight"))
+            {
+                if (on)
+                {
+                    flashOFF.Play();
+                    SetOn(false);
+                }
+                else if (lifetime > 0)
+                {
+                    flashON.Play();
+                    SetOn(true);
+                }
+            }
 
-        else if (Input.GetButtonDown("flashlight") && on)
-        {
-            flashOFF.Play();
-            light.enabled = false;
-            on = false;
-            off = true;
+            if (Input.GetButtonDown("reload") && batteries >= 1)
+            {
+                batteries -= 1;
+                lifetime = Mathf.Min(lifetime + 50, 100);
+            }
         }
 
         if (on)
         {
             lifetime -= 1 * Time.deltaTime;
+            if (lifetime <= 0)
+            {
+                lifetime = 0;
+                SetOn(false);
+            }
         }
 
-        if(lifetime <= 0)
-        {
-            light.enabled = false;
-            on = false;
-            off = true;
-            lifetime = 0;
-        }
-
-        if (lifetime >= 100)
-        {
-            lifetime = 100;
-        }
-
-        if (Input.GetButtonDown("reload") && batteries >= 1)
-        {
-            batteries -= 1;
-            lifetime += 50;
-        }
-
-        if (Input.GetButtonDown("reload") && batteries == 0)
-        {
-            return;
-        }
-
-        if(batteries <= 0)
-        {
-            batteries = 0;
-        }
-
-
-
+        UpdateText();
     }
 
+    void SetOn(bool value)
+    {
+        on = value;
+        light.enabled = value;
+    }
+
+    void UpdateText()
+    {
+        int roundedLifetime = Mathf.RoundToInt(lifetime);
+        if (roundedLifetime != shownLifetime)
+        {
+            shownLifetime = roundedLifetime;
+            text.text = roundedLifetime + "%";
+        }
+        if (batteries != shownBatteries)
+        {
+            shownBatteries = batteries;
+            batteryText.text = batteries.ToString();
+        }
+    }
 }
