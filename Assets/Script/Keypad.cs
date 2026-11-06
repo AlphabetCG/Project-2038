@@ -15,6 +15,7 @@ public class Keypad : MonoBehaviour
 
     public TextMeshProUGUI textOB;
     public string answer = "12345";
+    public string codeKey;      // ถ้าใส่ไว้ คำตอบจะมาจาก PuzzleCodes (สุ่มทุกเกม) แทน answer
 
     public AudioSource button;
     public AudioSource correct;
@@ -32,6 +33,9 @@ public class Keypad : MonoBehaviour
         keypadOB.SetActive(false);
     }
 
+    // อ่านตอนกด OK เพราะ Keypad อาจถูกปิดไว้ตั้งแต่เริ่มฉาก (Start ยังไม่ทำงาน)
+    string ExpectedAnswer => string.IsNullOrEmpty(codeKey) ? answer : PuzzleCodes.Get(codeKey);
+
     public void Number(int number)
     {
         if (showingWrong) return;
@@ -45,7 +49,7 @@ public class Keypad : MonoBehaviour
     public void Execute()
     {
         if (showingWrong) return;
-        if (textOB.text == answer)
+        if (textOB.text == ExpectedAnswer)
         {
             correct.Play();
             textOB.text = "Right";

@@ -21,6 +21,7 @@ public class PuzzleCodes : MonoBehaviour
         var rng = fixedSeed != 0 ? new System.Random(fixedSeed) : new System.Random();
 
         GenerateTaVChai(rng);
+        GenerateDigits(rng, "keypad1", 4); // Keypad ห้อง 1: เลขบนรูปห้องชั้นบน
 
 #if UNITY_EDITOR
         foreach (var kv in codes) Debug.Log("[PuzzleCodes] " + kv.Key + " = " + kv.Value);
@@ -45,6 +46,15 @@ public class PuzzleCodes : MonoBehaviour
 
         codes["tavchai_hex"] = hex;
         codes["tavchai_pass"] = value.ToString();
+    }
+
+    // รหัสตัวเลข n หลัก (ขึ้นต้นด้วย 0 ได้)
+    void GenerateDigits(System.Random rng, string key, int length)
+    {
+        var chars = new char[length];
+        for (int i = 0; i < length; i++) chars[i] = (char)('0' + rng.Next(10));
+        codes[key] = new string(chars);
+        codes[key + "_spaced"] = string.Join(" ", chars); // "3 9 0 8" สำหรับคำใบ้ที่เขียนเว้นวรรค
     }
 
     static int CountHexLetters(string hex)
