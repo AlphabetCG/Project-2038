@@ -56,6 +56,23 @@ public class GameFlow : MonoBehaviour
         return true;
     }
 
+    // เปิด GameObject หลังรอ delay วินาที ทำงานได้แม้ object ที่เรียกจะถูกปิดไปแล้ว
+    public static void ShowAfterDelay(float delay, params GameObject[] targets)
+    {
+        var runner = new GameObject("GameFlow.ShowAfterDelay").AddComponent<GameFlow>();
+        runner.StartCoroutine(runner.ShowRoutine(delay, targets));
+    }
+
+    IEnumerator ShowRoutine(float delay, GameObject[] targets)
+    {
+        yield return new WaitForSeconds(delay);
+        foreach (var t in targets)
+        {
+            if (t != null) t.SetActive(true);
+        }
+        Destroy(gameObject);
+    }
+
     public static void Quit()
     {
 #if UNITY_EDITOR
@@ -80,7 +97,7 @@ public class GameFlow : MonoBehaviour
     // เกมอยู่ในโหมดเล่นปกติ (ไม่ pause, ไม่ได้เปิด UI ที่ปลดล็อกเมาส์ไว้, เกมยังไม่จบ)
     public static bool IsInGameplay()
     {
-        return Time.timeScale > 0 && !GameEnded && Cursor.lockState == CursorLockMode.Locked;
+        return Time.timeScale > 0 && !GameEnded && !StartingScreen.IsPlaying && Cursor.lockState == CursorLockMode.Locked;
     }
 
     // กดปุ่ม Interact ได้เฉพาะตอนเล่นปกติ (กันการเปิด UI ซ้อนตอน pause หรือตอนเปิด UI อื่นอยู่)

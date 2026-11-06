@@ -11,6 +11,7 @@ public class FiniteLogic : MonoBehaviour
     public GameObject video1;
     public GameObject button;         // ปุ่ม Restart / Main Menu ตอนจบแบบแพ้ ไม่บังคับ
     public GameObject gameOverScreen; // หน้า Game Over ไม่บังคับ
+    public float screenDelay = 3f;    // รอให้วิดีโอ Game Over เล่นจบก่อนแสดงปุ่ม
 
     private bool condition1Done = false; // Flag for first condition
     private bool condition2Done = false; // Flag for second condition
@@ -38,8 +39,7 @@ public class FiniteLogic : MonoBehaviour
                 video.SetActive(true);
                 video1.SetActive(true);
                 item.SetActive(true);
-                if (button != null) button.SetActive(true);
-                if (gameOverScreen != null) gameOverScreen.SetActive(true);
+                GameFlow.ShowAfterDelay(screenDelay, button, gameOverScreen);
             }
         }
     }

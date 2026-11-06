@@ -16,6 +16,7 @@ public class TimerController : MonoBehaviour
 
     public GameObject button;
     public GameObject gameOverScreen; // หน้า Game Over (มีปุ่ม Restart / Main Menu) ไม่บังคับ
+    public float screenDelay = 3f;    // รอให้วิดีโอ Game Over เล่นจบก่อนแสดงปุ่ม
 
     void Start()
     {
@@ -61,7 +62,7 @@ public class TimerController : MonoBehaviour
         video.SetActive(true);
         video1.SetActive(true);
         test.SetActive(false);
-        button.SetActive(true);
-        if (gameOverScreen != null) gameOverScreen.SetActive(true);
+        // test คือ GameObject ที่มีสคริปต์นี้อยู่ จึงให้ GameFlow เป็นคนหน่วงเวลาแทน
+        GameFlow.ShowAfterDelay(screenDelay, button, gameOverScreen);
     }
 }
