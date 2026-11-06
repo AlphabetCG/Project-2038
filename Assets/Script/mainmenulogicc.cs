@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class mainmenulogicc : MonoBehaviour
 {
@@ -7,12 +6,11 @@ public class mainmenulogicc : MonoBehaviour
     public AudioSource buttonSound;
     public void changescreen(){
         loading.SetActive(true);
-        SceneManager.LoadScene("SampleScene");
+        StartCoroutine(GameFlow.LoadSceneAsync(GameFlow.GameScene));
     }
     public void ExitGameButton()
     {
         buttonSound.Play();
-        Application.Quit();
-        Debug.Log("App Has Exited");
+        GameFlow.Quit();
     }
 }

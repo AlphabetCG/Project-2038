@@ -11,8 +11,9 @@ public class Bosslogic : MonoBehaviour
     public GameObject checkitem5;
     public GameObject video1;
     public GameObject video2;
-    public AudioSource sound; 
+    public AudioSource sound;
     public GameObject heart1,heart2,heart3,heart4,heart5;
+    public GameObject winScreen; // หน้าจบเกม (มีปุ่ม Restart / Main Menu) ไม่บังคับ
     public bool test = true;
     public bool check1 = true;
     public bool check2 = true;
@@ -20,16 +21,11 @@ public class Bosslogic : MonoBehaviour
     public bool check4 = true;
     public bool check5 = true;
     private int sum = 0;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private bool won = false;
 
-    // Update is called once per frame
     void Update()
     {
-         if (havekey.activeSelf && test)
+        if (havekey.activeSelf && test)
         {
             canvas.SetActive(true);
             test = false;
@@ -59,19 +55,24 @@ public class Bosslogic : MonoBehaviour
             check5 = false;
             sum++;
         }
-        if(sum == 1){
-            heart1.SetActive(false);
-        }else if(sum == 2){
-            heart2.SetActive(false);
-        }else if (sum ==3){
-            heart3.SetActive(false);
-        }else if(sum ==4){
-            heart4.SetActive(false);
-        }else if(sum==5){
-            video1.SetActive(true);
-            video2.SetActive(true);
+
+        // ซ่อนหัวใจตามจำนวนที่เก็บได้ (กันกรณีเก็บได้หลายชิ้นในเฟรมเดียวแล้วหัวใจบางดวงไม่หาย)
+        if (sum >= 1) heart1.SetActive(false);
+        if (sum >= 2) heart2.SetActive(false);
+        if (sum >= 3) heart3.SetActive(false);
+        if (sum >= 4) heart4.SetActive(false);
+
+        if (sum >= 5 && !won)
+        {
+            won = true;
             heart5.SetActive(false);
             sound.Stop();
+            if (GameFlow.EndGame())
+            {
+                video1.SetActive(true);
+                video2.SetActive(true);
+                if (winScreen != null) winScreen.SetActive(true);
+            }
         }
     }
 }

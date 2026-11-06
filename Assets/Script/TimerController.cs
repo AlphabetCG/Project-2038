@@ -15,6 +15,7 @@ public class TimerController : MonoBehaviour
     public GameObject video1;
 
     public GameObject button;
+    public GameObject gameOverScreen; // หน้า Game Over (มีปุ่ม Restart / Main Menu) ไม่บังคับ
 
     void Start()
     {
@@ -24,19 +25,25 @@ public class TimerController : MonoBehaviour
 
     void Update()
     {
-        if (isTimerRunning)
+        if (!isTimerRunning) return;
+
+        // ถ้าเกมจบไปแล้วด้วยทางอื่น (เช่น ชนะบอส) ให้หยุดจับเวลา
+        if (GameFlow.GameEnded)
         {
-            if (currentTime > 0)
-            {
-                currentTime -= Time.deltaTime; // ลดเวลาตามเฟรมเรต
-                UpdateTimerUI(); // อัปเดต UI
-            }
-            else
-            {
-                currentTime = 0;
-                isTimerRunning = false; // หยุดจับเวลา
-                TimerEnded(); // เรียกฟังก์ชันเมื่อเวลาหมด
-            }
+            isTimerRunning = false;
+            return;
+        }
+
+        if (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime; // ลดเวลาตามเฟรมเรต
+            UpdateTimerUI(); // อัปเดต UI
+        }
+        else
+        {
+            currentTime = 0;
+            isTimerRunning = false; // หยุดจับเวลา
+            TimerEnded(); // เรียกฟังก์ชันเมื่อเวลาหมด
         }
     }
 
@@ -49,13 +56,12 @@ public class TimerController : MonoBehaviour
 
     void TimerEnded()
     {
+        if (!GameFlow.EndGame()) return;
+
         video.SetActive(true);
         video1.SetActive(true);
         test.SetActive(false);
         button.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Debug.Log("Time's up!");
-        // ใส่เงื่อนไขเพิ่มเติม เช่น เปลี่ยน Scene หรือแสดงข้อความ
+        if (gameOverScreen != null) gameOverScreen.SetActive(true);
     }
 }

@@ -8,59 +8,60 @@ public class pausegame : MonoBehaviour
     public GameObject resume;
     public GameObject quit;
 
-    public bool on;
-    public bool off;
-
-
-
+    private bool isPaused;
 
 
     void Start()
     {
         menu.SetActive(false);
-        off = true;
-        on = false;
+        isPaused = false;
     }
-
-
 
 
     void Update()
     {
-        if (off && Input.GetButtonDown("pause"))
-        {
-            Time.timeScale = 0;
-            menu.SetActive(true);
-            off = false;
-            on = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        if (!Input.GetButtonDown("pause")) return;
 
-        else if (on && Input.GetButtonDown("pause"))
+        if (isPaused)
         {
-            Time.timeScale = 1;
-            menu.SetActive(false);
-            off = true;
-            on = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Resume();
         }
-        
+        // ไม่ให้ pause ซ้อนตอนเปิด UI อื่น (Keypad, Computer ฯลฯ) หรือตอนเกมจบแล้ว
+        else if (GameFlow.IsInGameplay())
+        {
+            Pause();
+        }
+    }
+
+    void Pause()
+    {
+        Time.timeScale = 0;
+        menu.SetActive(true);
+        isPaused = true;
+        GameFlow.UnlockCursor();
     }
 
     public void Resume()
     {
-            
-            Time.timeScale = 1;
-            menu.SetActive(false);
-            off = true;
-            on = false;
-
+        Time.timeScale = 1;
+        menu.SetActive(false);
+        isPaused = false;
+        GameFlow.LockCursor();
     }
 
+    public void Restart()
+    {
+        GameFlow.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    public void MainMenu()
+    {
+        GameFlow.LoadScene(GameFlow.MainMenuScene);
+    }
+
+    // ปุ่ม Exit ในเมนู Pause กลับไป Main Menu แทนการปิดเกม
     public void Exit()
     {
-        Application.Quit();
+        MainMenu();
     }
 }
