@@ -24,6 +24,7 @@ public class PuzzleCodes : MonoBehaviour
         GenerateDigits(rng, "keypad1", 4); // Keypad ห้อง 1: เลขบนรูปห้องชั้นบน
         GeneratePrefixPuzzle(rng, "keypad2"); // Keypad ห้อง 2: รหัสที่หายไป 1 หลัก = ผลของ prefix expression
         GenerateCombination(rng, "bomb");     // ระเบิด: รหัส = C(n,k)
+        GenerateEulerMap(rng);
 
 #if UNITY_EDITOR
         foreach (var kv in codes) Debug.Log("[PuzzleCodes] " + kv.Key + " = " + kv.Value);
@@ -110,6 +111,30 @@ public class PuzzleCodes : MonoBehaviour
         codes[key] = Combination(pick.x, pick.y).ToString();
         codes[key + "_n"] = pick.x.ToString();
         codes[key + "_k"] = pick.y.ToString();
+    }
+
+    // Each graph has its own seven-digit permutation. APE is the open Euler trail.
+    void GenerateEulerMap(System.Random rng)
+    {
+        var used = new HashSet<string>();
+        foreach (string graph in new[] { "cpe", "inc", "ene", "me", "ape", "env", "pe" })
+        {
+            string code;
+            do
+            {
+                char[] digits = "1234567".ToCharArray();
+                for (int i = digits.Length - 1; i > 0; i--)
+                {
+                    int j = rng.Next(i + 1);
+                    char swap = digits[i];
+                    digits[i] = digits[j];
+                    digits[j] = swap;
+                }
+                code = new string(digits);
+            } while (!used.Add(code));
+            codes["euler_" + graph] = code;
+        }
+        codes["jomo_pass"] = codes["euler_ape"];
     }
 
     static long Combination(int n, int k)
