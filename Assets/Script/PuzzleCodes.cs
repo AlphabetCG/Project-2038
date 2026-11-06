@@ -22,6 +22,7 @@ public class PuzzleCodes : MonoBehaviour
 
         GenerateTaVChai(rng);
         GenerateDigits(rng, "keypad1", 4); // Keypad ห้อง 1: เลขบนรูปห้องชั้นบน
+        GeneratePrefixPuzzle(rng, "keypad2"); // Keypad ห้อง 2: รหัสที่หายไป 1 หลัก = ผลของ prefix expression
 
 #if UNITY_EDITOR
         foreach (var kv in codes) Debug.Log("[PuzzleCodes] " + kv.Key + " = " + kv.Value);
@@ -55,6 +56,42 @@ public class PuzzleCodes : MonoBehaviour
         for (int i = 0; i < length; i++) chars[i] = (char)('0' + rng.Next(10));
         codes[key] = new string(chars);
         codes[key + "_spaced"] = string.Join(" ", chars); // "3 9 0 8" สำหรับคำใบ้ที่เขียนเว้นวรรค
+    }
+
+    // โจทย์รูปแบบเดิม "+ - * a b c / pow d e f" = (a*b - c) + (d^e / f) ได้คำตอบเป็นเลขหลักเดียว
+    // รหัส 4 หลักสุ่ม แล้วซ่อน 1 หลัก (ตำแหน่งสุ่ม) ให้ผู้เล่นหาจากโจทย์
+    //   key        = รหัสเต็ม เช่น "1038"
+    //   key_expr   = โจทย์ เช่น "+ - * 2 3 5 / pow 2 3 4"
+    //   key_hint   = รหัสที่ซ่อน 1 หลัก เช่น "1 0 _ 8"
+    void GeneratePrefixPuzzle(System.Random rng, string key)
+    {
+        int a, b, c, d, e, f, answer;
+        while (true)
+        {
+            d = rng.Next(2, 4);
+            e = rng.Next(2, 4);
+            int power = (int)System.Math.Pow(d, e); // 4, 8, 9, 27
+            var divisors = new List<int>();
+            for (int i = 2; i <= 9; i++) if (power % i == 0) divisors.Add(i);
+            f = divisors[rng.Next(divisors.Count)];
+            a = rng.Next(2, 10);
+            b = rng.Next(2, 10);
+            c = rng.Next(1, 10);
+            answer = a * b - c + power / f;
+            if (answer >= 0 && answer <= 9) break;
+        }
+
+        var digits = new char[4];
+        for (int i = 0; i < 4; i++) digits[i] = (char)('0' + rng.Next(10));
+        int hidden = rng.Next(4);
+        digits[hidden] = (char)('0' + answer);
+
+        var hint = new string[4];
+        for (int i = 0; i < 4; i++) hint[i] = i == hidden ? "_" : digits[i].ToString();
+
+        codes[key] = new string(digits);
+        codes[key + "_expr"] = "+ - * " + a + " " + b + " " + c + " / pow " + d + " " + e + " " + f;
+        codes[key + "_hint"] = string.Join(" ", hint);
     }
 
     static int CountHexLetters(string hex)

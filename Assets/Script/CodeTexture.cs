@@ -19,17 +19,30 @@ public class CodeTexture : MonoBehaviour
     [Tooltip("สัดส่วนกว้าง/สูงของรูปตอนแสดงบนวัตถุ (0 = ใช้ขนาด texture) ใช้เมื่อ texture ถูก import เป็นขนาดอื่น เช่น 2048x1024")]
     public float displayAspect = 0;
 
+    // ข้อความเพิ่มเติมบนรูปเดียวกัน (ใช้ font / สี / ระยะห่างตัวอักษรเดียวกัน)
+    [System.Serializable]
+    public class ExtraText
+    {
+        public string template;
+        public Vector2 center = new Vector2(0.5f, 0.5f);
+        public Vector2 maxSize = new Vector2(0.7f, 0.2f);
+    }
+    public ExtraText[] extraTexts = new ExtraText[0];
+
     private Texture2D result;
 
     void Start()
     {
-        GetComponent<Renderer>().material.mainTexture = Render(PuzzleCodes.Format(template));
+        var extras = new string[extraTexts.Length];
+        for (int i = 0; i < extras.Length; i++) extras[i] = PuzzleCodes.Format(extraTexts[i].template);
+        GetComponent<Renderer>().material.mainTexture = Render(PuzzleCodes.Format(template), extras);
     }
 
     // layer ที่ใช้ตอนวาด (ต้องไม่มีวัตถุอื่นในฉากใช้)
     const int RenderLayer = 31;
 
-    public Texture2D Render(string text)
+    // text = ข้อความหลัก, extras = ข้อความของ extraTexts ตามลำดับ
+    public Texture2D Render(string text, params string[] extras)
     {
         int w = background.width, h = background.height;
 
@@ -39,28 +52,9 @@ public class CodeTexture : MonoBehaviour
         var root = new GameObject("CodeTexture.Render") { hideFlags = HideFlags.HideAndDontSave };
         root.transform.position = new Vector3(0, -10000, 0);
 
-        var textGo = new GameObject("Text");
-        textGo.layer = RenderLayer;
-        textGo.transform.SetParent(root.transform, false);
-        var tmp = textGo.AddComponent<TextMeshPro>();
-        tmp.font = font;
-        tmp.fontSize = 10;
-        tmp.color = color;
-        tmp.characterSpacing = characterSpacing;
-        tmp.fontStyle = fontStyle;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.textWrappingMode = TextWrappingModes.NoWrap;
-        tmp.text = text;
-        tmp.ForceMeshUpdate();
-
-        // ปรับขนาดข้อความให้พอดีกรอบ maxSize แล้ววางที่ center
-        // ถ้า texture ถูกยืด (displayAspect) ย่อ/ขยายแกน y ชดเชย ตัวอักษรจะไม่เพี้ยนตอนแสดงจริง
-        Bounds b = tmp.textBounds;
-        float yFactor = displayAspect > 0 ? displayAspect * h / w : 1f;
-        float scale = Mathf.Min(maxSize.x * viewW / b.size.x, maxSize.y * viewH / (b.size.y * yFactor));
-        Vector3 scaleVec = new Vector3(scale, scale * yFactor, 1);
-        textGo.transform.localScale = scaleVec;
-        textGo.transform.localPosition = new Vector3((center.x - 0.5f) * viewW, (center.y - 0.5f) * viewH, 0) - Vector3.Scale(b.center, scaleVec);
+        AddText(root.transform, text, center, maxSize, viewW, viewH, w, h);
+        for (int i = 0; i < extras.Length && i < extraTexts.Length; i++)
+            AddText(root.transform, extras[i], extraTexts[i].center, extraTexts[i].maxSize, viewW, viewH, w, h);
 
         var cam = new GameObject("Camera").AddComponent<Camera>();
         cam.transform.SetParent(root.transform, false);
@@ -99,6 +93,32 @@ public class CodeTexture : MonoBehaviour
         result.SetPixels(bgPx);
         result.Apply(true);
         return result;
+    }
+
+    void AddText(Transform root, string text, Vector2 textCenter, Vector2 textMaxSize, float viewW, float viewH, int w, int h)
+    {
+        var textGo = new GameObject("Text");
+        textGo.layer = RenderLayer;
+        textGo.transform.SetParent(root, false);
+        var tmp = textGo.AddComponent<TextMeshPro>();
+        tmp.font = font;
+        tmp.fontSize = 10;
+        tmp.color = color;
+        tmp.characterSpacing = characterSpacing;
+        tmp.fontStyle = fontStyle;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.textWrappingMode = TextWrappingModes.NoWrap;
+        tmp.text = text;
+        tmp.ForceMeshUpdate();
+
+        // ปรับขนาดข้อความให้พอดีกรอบ maxSize แล้ววางที่ center
+        // ถ้า texture ถูกยืด (displayAspect) ย่อ/ขยายแกน y ชดเชย ตัวอักษรจะไม่เพี้ยนตอนแสดงจริง
+        Bounds b = tmp.textBounds;
+        float yFactor = displayAspect > 0 ? displayAspect * h / w : 1f;
+        float scale = Mathf.Min(textMaxSize.x * viewW / b.size.x, textMaxSize.y * viewH / (b.size.y * yFactor));
+        Vector3 scaleVec = new Vector3(scale, scale * yFactor, 1);
+        textGo.transform.localScale = scaleVec;
+        textGo.transform.localPosition = new Vector3((textCenter.x - 0.5f) * viewW, (textCenter.y - 0.5f) * viewH, 0) - Vector3.Scale(b.center, scaleVec);
     }
 
     static Color[] ReadPixels(RenderTexture rt, int w, int h)

@@ -65568,6 +65568,7 @@ GameObject:
   - component: {fileID: 847728674}
   - component: {fileID: 847728673}
   - component: {fileID: 847728672}
+  - component: {fileID: 847728675}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -65664,6 +65665,31 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847728670}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &847728675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847728670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2365225a496687e46859d36cc44668bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 2800000, guid: 7dee4a2cbb176104c86dc66af48c5a29, type: 3}
+  template: '{keypad2_hint}'
+  font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  color: {r: 0, g: 0, b: 0, a: 1}
+  characterSpacing: 0
+  fontStyle: 0
+  center: {x: 0.507, y: 0.191}
+  maxSize: {x: 0.4, y: 0.163}
+  displayAspect: 1.3333334
+  extraTexts:
+  - template: '{keypad2_expr}'
+    center: {x: 0.518, y: 0.531}
+    maxSize: {x: 0.813, y: 0.11}
 --- !u!1 &848797988
 GameObject:
   m_ObjectHideFlags: 0
@@ -118718,6 +118744,7 @@ MonoBehaviour:
   center: {x: 0.5, y: 0.732}
   maxSize: {x: 0.74, y: 0.24}
   displayAspect: 1.3338038
+  extraTexts: []
 --- !u!4 &1503072297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3277708446479996907, guid: 05dfc96d695321943913472b509ece48, type: 3}
@@ -152157,7 +152184,7 @@ MonoBehaviour:
   ANI: {fileID: 637468840}
   textOB: {fileID: 653701966}
   answer: 1038
-  codeKey: 
+  codeKey: keypad2
   button: {fileID: 115079274}
   correct: {fileID: 385634525}
   wrong: {fileID: 982002687}
