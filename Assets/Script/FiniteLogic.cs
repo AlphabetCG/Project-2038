@@ -9,6 +9,8 @@ public class FiniteLogic : MonoBehaviour
     public GameObject s3_active;
     public GameObject video;
     public GameObject video1;
+    public GameObject button;         // ปุ่ม Restart / Main Menu ตอนจบแบบแพ้ ไม่บังคับ
+    public GameObject gameOverScreen; // หน้า Game Over ไม่บังคับ
 
     private bool condition1Done = false; // Flag for first condition
     private bool condition2Done = false; // Flag for second condition
@@ -25,14 +27,20 @@ public class FiniteLogic : MonoBehaviour
         }
 
         // Check second condition and ensure it runs only once
+        // เงื่อนไขนี้เล่นวิดีโอเดียวกับตอนเวลาหมด จึงถือเป็นจบเกมแบบแพ้
         if (!condition2Done && s0_active != null && s0_active.activeSelf &&
             s1_active != null && s1_active.activeSelf &&
             s2_active != null && s2_active.activeSelf && !s3_active.activeSelf)
         {
-            video.SetActive(true);
-            video1.SetActive(true);
-            item.SetActive(true);
             condition2Done = true; // Mark condition as completed
+            if (GameFlow.EndGame())
+            {
+                video.SetActive(true);
+                video1.SetActive(true);
+                item.SetActive(true);
+                if (button != null) button.SetActive(true);
+                if (gameOverScreen != null) gameOverScreen.SetActive(true);
+            }
         }
     }
 }

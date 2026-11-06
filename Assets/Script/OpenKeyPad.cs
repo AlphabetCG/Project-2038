@@ -40,7 +40,7 @@ public class OpenKeyPad : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && inReach)
+        if(GameFlow.InteractPressed() && inReach)
         {
             keypadOB.SetActive(true);
         }

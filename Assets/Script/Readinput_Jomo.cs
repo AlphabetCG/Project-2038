@@ -25,7 +25,6 @@ public class Readinput_Jomo : MonoBehaviour
     void Update()
     {
         if(input == "3761245"){
-            Debug.Log("jeffTureeeeeee");
             line.SetActive(true);
             input = "";
             login_UI.SetActive(false);
@@ -35,7 +34,6 @@ public class Readinput_Jomo : MonoBehaviour
     public void ReadStringInput(string s)
     {
         input = s;
-        Debug.Log(input);
     }
     public void DoNotOpen(){
         folder_UI.SetActive(true);
@@ -59,21 +57,13 @@ public class Readinput_Jomo : MonoBehaviour
     {
 
         login_UI.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+        PlayerUI.Close(player, hud, inv);
     }
     public void ExitButton_main()
     {
         Login_text.SetActive(false);
         flashdrive_txt.SetActive(true);
         main_UI.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+        PlayerUI.Close(player, hud, inv);
     }
 }

@@ -13,6 +13,7 @@ public class PickUpKey : MonoBehaviour
     public GameObject text_new;
 
     public bool inReach;
+    private bool pickedUp; // กันการกดเก็บซ้ำ
 
 
     void Start()
@@ -25,7 +26,7 @@ public class PickUpKey : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {   
             
             inReach = true;
@@ -36,7 +37,7 @@ public class PickUpKey : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {
             inReach = false;
             pickUpText.SetActive(false);
@@ -47,8 +48,10 @@ public class PickUpKey : MonoBehaviour
 
     void Update()
     {
-        if (inReach && Input.GetButtonDown("Interact"))
+        if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
+            pickedUp = true;
+            inReach = false;
             old_text.SetActive(false);
             text_new.SetActive(true);
             keyOB.SetActive(false);

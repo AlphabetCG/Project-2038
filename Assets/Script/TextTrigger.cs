@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class texttrigger : MonoBehaviour
+public class TextTrigger : MonoBehaviour
 {
     public GameObject pickUpText;
     public GameObject cude;

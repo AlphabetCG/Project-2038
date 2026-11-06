@@ -17,8 +17,8 @@ public class DoorsWithLock : MonoBehaviour
     public bool locked;
     public bool hasKey;
 
-
-
+    // Animator ของประตูใช้ bool "Open" แบบ pulse: true หนึ่งเฟรมเพื่อสลับ เปิด <-> ปิด
+    private bool pulseSent;
 
 
     void Start()
@@ -48,63 +48,36 @@ public class DoorsWithLock : MonoBehaviour
     }
 
 
-
-
-
     void Update()
     {
+        if (pulseSent)
+        {
+            door.SetBool("Open", false);
+            pulseSent = false;
+        }
+
         if(KeyINV.activeInHierarchy)
         {
             locked = false;
             hasKey = true;
-        }  
-        
+        }
         else
         {
             hasKey = false;
         }
 
-        if (hasKey && inReach && Input.GetButtonDown("Interact"))
+        if (!inReach || !GameFlow.InteractPressed()) return;
+
+        if (hasKey)
         {
             unlocked = true;
-            DoorOpens();
-        }
-
-        else
-        {
-            DoorCloses();
-        }
-
-        if (locked && inReach && Input.GetButtonDown("Interact"))
-        {
-            lockedSound.Play();
-            
-        }
-
-
-
-
-    }
-    void DoorOpens ()
-    {
-        if (unlocked)
-        {
             door.SetBool("Open", true);
-            door.SetBool("Closed", false);
+            pulseSent = true;
             doorSound.Play();
         }
-
-    }
-
-    void DoorCloses()
-    {
-        if (unlocked)
+        else if (locked)
         {
-            door.SetBool("Open", false);
-            door.SetBool("Closed", true);
+            lockedSound.Play();
         }
-
     }
-
-
 }

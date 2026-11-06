@@ -15,6 +15,7 @@ public GameObject keyOB;
     public AudioSource keySound;
 
     public bool inReach;
+    private bool pickedUp; // กันการกดเก็บซ้ำ
 
 
     void Start()
@@ -27,7 +28,7 @@ public GameObject keyOB;
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {   
             
             inReach = true;
@@ -38,7 +39,7 @@ public GameObject keyOB;
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {
             inReach = false;
             pickUpText.SetActive(false);
@@ -49,8 +50,10 @@ public GameObject keyOB;
 
     void Update()
     {
-        if (inReach && Input.GetButtonDown("Interact"))
+        if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
+            pickedUp = true;
+            inReach = false;
             item1.SetActive(true);
             item2.SetActive(true);
             item3.SetActive(true);

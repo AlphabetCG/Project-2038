@@ -29,6 +29,7 @@ public class PickUpFinalKey : MonoBehaviour
 
 
     public bool inReach;
+    private bool pickedUp; // กันการกดเก็บซ้ำ
 
 
     void Start()
@@ -41,7 +42,7 @@ public class PickUpFinalKey : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {
             inReach = true;
             pickUpText.SetActive(true);
@@ -51,7 +52,7 @@ public class PickUpFinalKey : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {
             inReach = false;
             pickUpText.SetActive(false);
@@ -62,8 +63,10 @@ public class PickUpFinalKey : MonoBehaviour
 
     void Update()
     {
-        if (inReach && Input.GetButtonDown("Interact"))
-        {   
+        if (!pickedUp && inReach && GameFlow.InteractPressed())
+        {
+            pickedUp = true;
+            inReach = false;
             Opendoor.SetActive(true);
             sceen.SetActive(true);
             video.SetActive(true);

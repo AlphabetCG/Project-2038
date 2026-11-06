@@ -9,6 +9,7 @@ public class keyboss : MonoBehaviour
     public GameObject oldtext;
     public GameObject newtext;
     public bool inReach;
+    private bool pickedUp; // กันการกดเก็บซ้ำ
 
 
     void Start()
@@ -21,7 +22,7 @@ public class keyboss : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {   
             
             inReach = true;
@@ -32,7 +33,7 @@ public class keyboss : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Reach")
+        if (other.gameObject.tag == "Reach" && !pickedUp)
         {
             inReach = false;
             pickUpText.SetActive(false);
@@ -43,8 +44,10 @@ public class keyboss : MonoBehaviour
 
     void Update()
     {
-        if (inReach && Input.GetButtonDown("Interact"))
+        if (!pickedUp && inReach && GameFlow.InteractPressed())
         {
+            pickedUp = true;
+            inReach = false;
             keyOB.SetActive(false);
             keySound.Play();
             oldtext.SetActive(false);

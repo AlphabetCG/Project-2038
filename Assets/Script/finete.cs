@@ -52,7 +52,7 @@ public class finete : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && inReach)
+        if(GameFlow.InteractPressed() && inReach)
         {
             canvas.SetActive(true);
             if(test){
@@ -60,11 +60,7 @@ public class finete : MonoBehaviour
             }else{
                 noteUI.SetActive(true);
             }
-            hud.SetActive(false);
-            inv.SetActive(false);
-            player.GetComponent<FirstPersonController>().enabled = false;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            PlayerUI.Open(player, hud, inv);
         }
         
     }
@@ -73,20 +69,12 @@ public class finete : MonoBehaviour
     public void ExitButton()
     {   
         canvas.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+        PlayerUI.Close(player, hud, inv);
     }
     public void ExitButton_other()
     {   
         canvas.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+        PlayerUI.Close(player, hud, inv);
     }
     public void pressButton(){
         test = true;

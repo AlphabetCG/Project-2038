@@ -4,7 +4,16 @@ public class quitGame : MonoBehaviour
 {
     public void Quit()
     {
-        Debug.Log("Quit Game"); // ✅ แสดงใน Console ตอนทดสอบใน Editor
-        Application.Quit();      // ✅ ใช้คำสั่งออกจากเกม (จะทำงานเฉพาะตอน Build)
+        GameFlow.Quit(); // ใน Editor จะหยุด Play mode, ตอน Build จะปิดเกม
+    }
+
+    public void Restart()
+    {
+        GameFlow.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    public void MainMenu()
+    {
+        GameFlow.LoadScene(GameFlow.MainMenuScene);
     }
 }

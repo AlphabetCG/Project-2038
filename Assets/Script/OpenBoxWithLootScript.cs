@@ -39,7 +39,7 @@ public class OpenBoxWithLootScript : MonoBehaviour
     }
     void Update()
     {
-        if(keyOBNeeded.activeInHierarchy == true && inReach && Input.GetButtonDown("Interact"))
+        if(keyOBNeeded.activeInHierarchy == true && inReach && GameFlow.InteractPressed())
         {
             keyOBNeeded.SetActive(false);
             openSound.Play();
@@ -52,7 +52,7 @@ public class OpenBoxWithLootScript : MonoBehaviour
             new_line.SetActive(true);
 
         }
-        else if (keyOBNeeded.activeInHierarchy == false && inReach && Input.GetButtonDown("Interact"))
+        else if (keyOBNeeded.activeInHierarchy == false && inReach && GameFlow.InteractPressed())
         {
             openText.SetActive(false);
             KeyMissingText.SetActive(true);

@@ -16,6 +16,7 @@ public class MainMenuLogic : MonoBehaviour
 
     void Start()
     {
+        GameFlow.UnlockCursor(); // กลับมาจากเกมแล้วเมาส์ต้องใช้งานได้
         mainMenu = GameObject.Find("MainMenuCanvas");
         optionsMenu = GameObject.Find("OptionsCanvas");
         extrasMenu = GameObject.Find("ExtrasCanvas");
@@ -32,7 +33,7 @@ public class MainMenuLogic : MonoBehaviour
         loading.GetComponent<Canvas>().enabled = true;
         mainMenu.GetComponent<Canvas>().enabled = false;
         buttonSound.Play();
-        SceneManager.LoadScene("SampleScene");
+        StartCoroutine(GameFlow.LoadSceneAsync(GameFlow.GameScene));
     }
 
     public void OptionsButton()
@@ -52,8 +53,7 @@ public class MainMenuLogic : MonoBehaviour
     public void ExitGameButton()
     {
         buttonSound.Play();
-        Application.Quit();
-        Debug.Log("App Has Exited");
+        GameFlow.Quit();
     }
 
     public void ReturnToMainMenuButton()

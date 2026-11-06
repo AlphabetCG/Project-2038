@@ -40,7 +40,7 @@ public GameObject keypadOB;
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && inReach)
+        if(GameFlow.InteractPressed() && inReach)
         {
             keypadOB.SetActive(true);
         }

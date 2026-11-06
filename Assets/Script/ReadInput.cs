@@ -23,7 +23,6 @@ public class ReadInput : MonoBehaviour
     void Update()
     {
         if(input == "701310"){
-            Debug.Log("jeffTureeeeeee");
             line.SetActive(true);
             input = "";
             login_UI.SetActive(false);
@@ -33,7 +32,6 @@ public class ReadInput : MonoBehaviour
     public void ReadStringInput(string s)
     {
         input = s;
-        Debug.Log(input);
     }
     public void DoNotOpen(){
         NotePad_UI.SetActive(true);
@@ -45,11 +43,7 @@ public class ReadInput : MonoBehaviour
     {
 
         login_UI.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+        PlayerUI.Close(player, hud, inv);
     }
     public void ExitButton_main()
     {   
@@ -57,10 +51,6 @@ public class ReadInput : MonoBehaviour
         line.SetActive(false);
         check_list.SetActive(true);
         main_UI.SetActive(false);
-        hud.SetActive(true);
-        inv.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเคอร์เซอร์ไว้กลางจอ
+        PlayerUI.Close(player, hud, inv);
     }
 }
