@@ -5,6 +5,7 @@ using UnityEngine;
 public class battery : MonoBehaviour
 {
     private bool inReach;
+    private bool collected;
 
     public GameObject pickUpText;
     private GameObject flashlight;
@@ -44,12 +45,19 @@ public class battery : MonoBehaviour
     {
         if(GameFlow.InteractPressed() && inReach)
         {
-            flashlight.GetComponent<FlashlightAdvanced>().batteries += 1;
-            pickUpSound.Play();
-            inReach = false;
-            pickUpText.SetActive(false);
-            Destroy(gameObject);
+            Collect();
         }
         
+    }
+
+    public void Collect()
+    {
+        if (collected || !inReach || !GameFlow.IsInGameplay()) return;
+        collected = true;
+        flashlight.GetComponent<FlashlightAdvanced>().batteries += 1;
+        pickUpSound.Play();
+        inReach = false;
+        pickUpText.SetActive(false);
+        Destroy(gameObject);
     }
 }
