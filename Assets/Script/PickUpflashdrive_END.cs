@@ -54,11 +54,11 @@ public GameObject keyOB;
         {
             pickedUp = true;
             inReach = false;
-            item1.SetActive(true);
-            item2.SetActive(true);
-            item3.SetActive(true);
-            item4.SetActive(true);
-            item5.SetActive(true);
+            // ของในห้องบอสถูกจัดการโดย BossManager แล้ว ช่อง item1-5 ปล่อยว่างได้
+            foreach (var item in new[] { item1, item2, item3, item4, item5 })
+            {
+                if (item != null) item.SetActive(true);
+            }
             keyOB.SetActive(false);
             keySound.Play();
             invOB.SetActive(true);
