@@ -15,8 +15,9 @@ public static class PlayerUI
     {
         if (hud != null) hud.SetActive(true);
         if (inv != null) inv.SetActive(true);
-        SetPlayerEnabled(player, true);
-        GameFlow.LockCursor();
+        SetPlayerEnabled(player, !GameFlow.GameEnded);
+        if (GameFlow.GameEnded) GameFlow.UnlockCursor();
+        else GameFlow.LockCursor();
     }
 
     static void SetPlayerEnabled(GameObject player, bool enabled)

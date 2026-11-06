@@ -16,6 +16,7 @@ public class BossManager : MonoBehaviour
     public Inspectable[] inspectables;       // ของในห้องที่ตรวจได้ทั้งหมด
     public int anomalyCount = 5;
     public int maxStrikes = 3;
+    [Range(1, 45)] public float inspectAngle = 25f;
 
     [Header("UI")]
     public GameObject bossCanvas;            // canvas หัวใจบอส
@@ -49,7 +50,7 @@ public class BossManager : MonoBehaviour
     public int Strikes { get; private set; }
 
     private readonly List<Inspectable> inReach = new List<Inspectable>();
-    private readonly HashSet<Inspectable> checkedNormal = new HashSet<Inspectable>();
+    private readonly HashSet<Inspectable> checkedItems = new HashSet<Inspectable>();
     private readonly List<Anomaly> active = new List<Anomaly>();
     private bool finished;
     private Texture2D sketch;
@@ -87,6 +88,11 @@ public class BossManager : MonoBehaviour
 
     void Update()
     {
+        if (GameFlow.GameEnded)
+        {
+            if (IsActive) Finish();
+            return;
+        }
         if (!IsActive && !finished && startTrigger != null && startTrigger.activeInHierarchy) Begin();
         if (!IsActive) return;
 
@@ -97,7 +103,7 @@ public class BossManager : MonoBehaviour
 
     public void Begin()
     {
-        if (IsActive || finished) return;
+        if (IsActive || finished || GameFlow.GameEnded) return;
         IsActive = true;
 
         // สุ่มเลือกจุดผิด
@@ -114,11 +120,13 @@ public class BossManager : MonoBehaviour
             pool[index].Apply();
             active.Add(pool[index]);
             pool.RemoveAt(index);
+            pool.RemoveAll(a => a.ConflictsWith(active[active.Count - 1]));
         }
 
         if (bossCanvas != null) bossCanvas.SetActive(true);
         foreach (var h in hearts) if (h != null) h.SetActive(true);
         UpdateStrikeText();
+        if (bossMusic != null) bossMusic.Play();
 #if UNITY_EDITOR
         foreach (var a in active) Debug.Log("[BossManager] anomaly: " + a.name + " (" + a.kind + ")");
 #endif
@@ -140,22 +148,37 @@ public class BossManager : MonoBehaviour
         inReach.RemoveAll(i => i == null || !i.isActiveAndEnabled);
         if (inReach.Count == 0) return null;
         Camera cam = Camera.main;
-        if (cam == null) return inReach[inReach.Count - 1];
+        if (cam == null) return null;
 
         Inspectable best = null;
-        float bestDot = -1f;
+        float bestDot = Mathf.Cos(inspectAngle * Mathf.Deg2Rad);
         foreach (var i in inReach)
         {
+            if (checkedItems.Contains(i)) continue;
             Renderer r = i.GetComponentInChildren<Renderer>();
             Vector3 p = r != null ? r.bounds.center : i.transform.position;
             float dot = Vector3.Dot(cam.transform.forward, (p - cam.transform.position).normalized);
-            if (dot > bestDot) { bestDot = dot; best = i; }
+            if (dot > bestDot && HasLineOfSight(cam, i, p)) { bestDot = dot; best = i; }
         }
         return best;
     }
 
+    static bool HasLineOfSight(Camera cam, Inspectable target, Vector3 point)
+    {
+        Vector3 direction = point - cam.transform.position;
+        float distance = direction.magnitude;
+        foreach (var hit in Physics.RaycastAll(cam.transform.position, direction.normalized, distance, ~0, QueryTriggerInteraction.Ignore))
+        {
+            if (hit.transform.IsChildOf(target.transform) || hit.transform.IsChildOf(cam.transform.root)) continue;
+            if (hit.distance < distance - 0.02f) return false;
+        }
+        return true;
+    }
+
     void Inspect(Inspectable target)
     {
+        if (!IsActive || !GameFlow.IsInGameplay() || target == null || checkedItems.Contains(target)) return;
+        checkedItems.Add(target);
         Anomaly a = target.Anomaly;
         if (a != null && active.Contains(a))
         {
@@ -166,10 +189,9 @@ public class BossManager : MonoBehaviour
             for (int h = 0; h < hearts.Length; h++) if (hearts[h] != null) hearts[h].SetActive(h >= Found);
             if (active.Count == 0) Win();
         }
-        else if (!checkedNormal.Contains(target))
+        else
         {
             // ตรวจของปกติ = Strike (ชิ้นเดิมนับครั้งเดียว)
-            checkedNormal.Add(target);
             Strikes++;
             if (wrongSound != null) wrongSound.Play();
             if (wrongFlash != null) StartCoroutine(Flash());
@@ -214,6 +236,8 @@ public class BossManager : MonoBehaviour
         IsActive = false;
         finished = true;
         if (inspectPrompt != null) inspectPrompt.SetActive(false);
+        StopAllCoroutines();
+        if (wrongFlash != null) wrongFlash.SetActive(false);
         if (bossMusic != null) bossMusic.Stop();
     }
 }

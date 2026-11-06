@@ -52,6 +52,18 @@ public class GameFlow : MonoBehaviour
     {
         if (GameEnded) return false;
         GameEnded = true;
+        var player = Object.FindFirstObjectByType<FirstPersonController>();
+        if (player != null)
+        {
+            player.enabled = false;
+            var body = player.GetComponent<Rigidbody>();
+            if (body != null && !body.isKinematic)
+            {
+                body.linearVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+                body.isKinematic = true;
+            }
+        }
         UnlockCursor();
         return true;
     }
